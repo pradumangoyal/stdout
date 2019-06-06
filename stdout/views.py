@@ -1,5 +1,6 @@
 import os
 import subprocess
+from urllib.parse import unquote
 
 from django.shortcuts import render
 from django.conf import settings
@@ -13,7 +14,7 @@ def simple_upload(request):
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
         if 'stdout' in request.path:
-            subprocess.run(["lpr", settings.BASE_DIR+uploaded_file_url])
+            subprocess.run(["lpr", unquote(settings.BASE_DIR+uploaded_file_url)])
         return render(request, 'stdout.html', {
             'uploaded_file_url': uploaded_file_url
         })
